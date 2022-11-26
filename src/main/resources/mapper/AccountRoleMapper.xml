@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.one.onegate.mapper.RoleMapper">
+    <!--    Map result type -->
+    <resultMap id="RoleMap" type="Role">
+        <id property="id" column="OS_ROLE.ID" />
+        <result property="name" column="OS_ROLE.NAME" />
+        <result property="description" column="OS_ROLE.DESCRIPTION" />
+        <result property="status" column="OS_ROLE.STATUS" />
+        <result property="createdBy" column="OS_ROLE.CREATED_BY" />
+        <result property="createdAt" column="OS_ROLE.CREATED_AT" />
+    </resultMap>
+
+    <!--    Query-->
+    <select id="findByName" parameterType="String" resultType="hashmap" resultMap="RoleMap">
+        SELECT * FROM OS_ROLE M WHERE M.NAME = #{name};
+    </select>
+
+    <insert id="save" parameterType="Role" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO OS_ROLE (NAME, DESCRIPTION, STATUS, CREATED_AT, CREATED_BY)
+        VALUES (#{name}, #{description}, #{status}, #{createdAt}, #{createdBy});
+    </insert>
+</mapper>

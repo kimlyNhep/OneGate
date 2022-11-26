@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.one.onegate.mapper.AccountMapper">
+    <!--    Map result type -->
+    <resultMap id="AccountTypeMap" type="com.one.onegate.model.Account">
+        <id property="id" column="OG_ACCOUNT.ID" />
+        <result property="username" column="OG_ACCOUNT.USERNAME" jdbcType="VARCHAR"/>
+        <result property="password" column="OG_ACCOUNT.PASSWORD" jdbcType="VARCHAR"/>
+        <result property="email" column="OG_ACCOUNT.EMAIL" jdbcType="VARCHAR"/>
+        <result property="status" column="OG_ACCOUNT.STATUS" jdbcType="CHAR"/>
+        <result property="createdBy" column="OG_ACCOUNT.CREATED_BY"  jdbcType="VARCHAR"/>
+        <result property="createdAt" column="OG_ACCOUNT.CREATED_AT" jdbcType="TIMESTAMP"/>
+        <association property="roles" column="OG_ACCOUNT.ROLE_ID" javaType="com.one.onegate.model.Role">
+            <id property="id" column="OG_ROLE.ID" />
+            <result property="name" column="OG_ROLE.NAME" />
+            <result property="description" column="OG_ROLE.DESCRIPTION" />
+            <result property="status" column="OG_ROLE.STATUS" />
+        </association>
+    </resultMap>
+
+<!--        Query-->
+    <select id="findByUsername" parameterType="string" resultType="hashmap" resultMap="AccountTypeMap">
+        SELECT * FROM OG_ACCOUNT M WHERE M.USERNAME = #{id};
+    </select>
+
+    <select id="countByUsername" resultType="integer">
+        SELECT COUNT(M.USERNAME) FROM OG_ACCOUNT M;
+    </select>
+
+    <select id="countByEmail" resultType="integer">
+        SELECT COUNT(M.EMAIL) FROM OG_ACCOUNT M;
+    </select>
+
+    <select id="findAll" resultMap="AccountTypeMap">
+        SELECT * FROM OG_ACCOUNT;
+    </select>
+
+    <insert id="save" parameterType="com.one.onegate.model.Account" keyProperty="id" useGeneratedKeys="true">
+        <selectKey keyProperty="role_id" resultType="integer">
+            SELECT id as role_id FROM OG_ROLE R WHERE R.NAME = #{roles.name}
+        </selectKey>
+        INSERT INTO OG_ACCOUNT (USERNAME, EMAIL, PASSWORD, STATUS, ROLE_ID, CREATED_AT, CREATED_BY)
+        VALUES (#{username}, #{email}, #{password}, #{status}, #{role_id}, #{createdAt}, #{createdBy});
+    </insert>
+</mapper>

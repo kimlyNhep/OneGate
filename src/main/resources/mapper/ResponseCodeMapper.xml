@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.one.onegate.mapper.ResponseCodeMapper">
+    <!--    Map result type -->
+    <resultMap id="ResponseCodeTypeMap" type="com.one.onegate.model.ResponseCode">
+        <id property="id" column="OS_RESPONSE_CODE.ID" />
+        <result property="code" column="OS_RESPONSE_CODE.CODE" />
+        <result property="description" column="OS_RESPONSE_CODE.DESCRIPTION" />
+        <result property="status" column="OS_RESPONSE_CODE.STATUS" />
+        <result property="valueEN" column="OS_RESPONSE_CODE.NAME_EN" />
+        <result property="valueKH" column="OS_RESPONSE_CODE.NAME_KH" />
+        <result property="httpStatus" column="OS_RESPONSE_CODE.HTTP_STATUS" />
+        <result property="createdBy" column="OS_RESPONSE_CODE.CREATED_BY"  />
+        <result property="createdAt" column="OS_RESPONSE_CODE.CREATED_AT" />
+    </resultMap>
+
+    <!--    Query-->
+    <select id="findAllByStatus" parameterType="string" resultType="hashmap" resultMap="ResponseCodeTypeMap">
+        SELECT * FROM OG_RESPONSE_CODE M WHERE M.STATUS = #{status};
+    </select>
+
+    <insert id="save" parameterType="com.one.onegate.model.ResponseCode" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO OG_RESPONSE_CODE (CODE, DESCRIPTION, HTTP_STATUS, NAME_KH, NAME_EN, STATUS, CREATED_AT, CREATED_BY)
+        VALUES (#{code}, #{description}, #{httpStatus}, #{valueKH}, #{valueEN}, #{status}, #{createdAt}, #{createdBy});
+    </insert>
+</mapper>

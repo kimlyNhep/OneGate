@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: 'db'
+    environment:
+      POSTGRES_DB: ONEGATEDB
+      POSTGRES_USER: ONEGATEADMIN
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "8001:5432"
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '8002:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local

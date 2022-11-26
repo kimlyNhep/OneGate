@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="com.one.onegate.model.Account" alias="Account" />
+        <typeAlias type="com.one.onegate.model.ResponseCode" alias="ResponseCode" />
+        <typeAlias type="com.one.onegate.model.Role" alias="Role" />
+        <package name="com.one.onegate.model"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="mapper/AccountMapper.xml"/>
+        <mapper resource="mapper/ResponseCodeMapper.xml" />
+        <mapper resource="mapper/AccountRoleMapper.xml" />
+    </mappers>
+</configuration>
